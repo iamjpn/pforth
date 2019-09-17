@@ -187,10 +187,12 @@ int sdTerminalOut( char c )
 {
     if (qemu_console)
     {
+          while (qemuUARTTXFull());
           qemuUARTWrite(c);
     }
     else
     {
+          while (potatoUARTTXFull());
           potatoUARTWrite(c);
     }
 
@@ -201,10 +203,12 @@ int sdTerminalEcho( char c )
 {
     if (qemu_console)
     {
+          while(qemuUARTTXFull());
           qemuUARTWrite(c);
     }
     else
     {
+          while (potatoUARTTXFull());
           potatoUARTWrite(c);
     }
     return 0;
