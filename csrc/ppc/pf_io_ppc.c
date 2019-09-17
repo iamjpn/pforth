@@ -26,9 +26,6 @@
 
 int qemu_console;               /* Set in head.S */
 
-static uint64_t potato_uart_base;
-static uint64_t qemu_uart_base;
-
 #define PROC_FREQ 50000000
 #define UART_FREQ 115200
 #define POTATO_UART_BASE 0xc0002000
@@ -49,7 +46,7 @@ static uint64_t potatoUARTRegRead( int offset )
     uint64_t addr;
     uint64_t val;
 
-    addr = potato_uart_base + offset;
+    addr = POTATO_UART_BASE + offset;
 
     val = *(volatile uint64_t * ) addr;
 
@@ -60,7 +57,7 @@ static void potatoUARTRegWrite( int offset, uint64_t val )
 {
     uint64_t addr;
 
-    addr = potato_uart_base + offset;
+    addr = POTATO_UART_BASE + offset;
 
     *(volatile uint64_t *) addr = val;
 }
@@ -149,7 +146,7 @@ static void qemuUARTRegWrite( uint64_t offset, uint8_t val )
 {
     uint64_t addr;
 
-    addr = qemu_uart_base + offset;
+    addr = QEMU_UART_BASE + offset;
 
     *(volatile uint8_t *) addr = val;
 }
@@ -159,7 +156,7 @@ static uint8_t qemuUARTRegRead( uint64_t offset )
     uint64_t addr;
     uint8_t val;
 
-    addr = qemu_uart_base + offset;
+    addr = QEMU_UART_BASE + offset;
 
     val = *(volatile uint8_t *) addr;
 
@@ -245,11 +242,10 @@ void sdTerminalInit( void )
 {
     if ( qemu_console )
     {
-          qemu_uart_base = QEMU_UART_BASE;
+        ;
     }
     else
     {
-          potato_uart_base = POTATO_UART_BASE;
           potatoUARTRegWrite(POTATO_CONSOLE_CLOCK_DIV,
                              potato_uart_divisor(PROC_FREQ,
                                                  UART_FREQ));
