@@ -192,6 +192,8 @@ int sdTerminalOut( char c )
     }
     else
     {
+          if ( c == '\n' )
+		  sdTerminalOut('\r');
           while (potatoUARTTXFull());
           potatoUARTWrite(c);
     }
@@ -230,15 +232,6 @@ int sdTerminalIn( void )
 
 int sdTerminalFlush( void )
 {
-    if (qemu_console)
-    {
-          ;
-    }
-    else
-    {
-          potatoUARTWrite('\r');
-          potatoUARTWrite('\n');
-    }
     return -1;
 }
 
